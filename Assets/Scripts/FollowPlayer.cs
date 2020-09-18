@@ -17,6 +17,11 @@ public class FollowPlayer : MonoBehaviour
 
     void LateUpdate()
     {
+        FollowPlayerObject();
+    }
+
+    void FollowPlayerObject()
+    {
         transform.position = player.transform.position + offset;
         transform.rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z);
     }
