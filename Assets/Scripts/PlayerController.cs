@@ -6,9 +6,9 @@ public class PlayerController : MonoBehaviour
 {
 
     [SerializeField]
-    float moveSpeed = 4.0f;
+    private float moveSpeed = 4.0f;
 
-    Vector3 forward, right;
+    private Vector3 forward, right;
 
     void Start()
     {
