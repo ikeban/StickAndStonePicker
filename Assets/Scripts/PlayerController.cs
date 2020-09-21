@@ -35,7 +35,11 @@ public class PlayerController : MonoBehaviour
         Vector3 upMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
         Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
 
-        transform.forward = heading;
+        if (heading != Vector3.zero)
+        {
+            transform.forward = heading;
+        }
+        
         playerRb.AddForce(heading * moveSpeed);
         //transform.position += upMovement;
         //transform.position += rightMovement;

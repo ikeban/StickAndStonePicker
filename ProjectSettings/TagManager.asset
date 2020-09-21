@@ -10,6 +10,7 @@ TagManager:
   - Stick
   - Stone
   - Nail
+  - Buyer
   layers:
   - Default
   - TransparentFX
