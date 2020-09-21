@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    [SerializeField]
-    private float moveSpeed = 4.0f;
+    //[SerializeField]
+    private float moveSpeed = 14000.0f;
+    private Rigidbody playerRb;
 
     private Vector3 forward, right;
 
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
         forward.y = 0;
         forward = Vector3.Normalize(forward);
         right = Quaternion.Euler( new Vector3(0, 90, 0) ) * forward;
+        playerRb = GetComponent<Rigidbody>();
     }
 
 
@@ -34,8 +36,9 @@ public class PlayerController : MonoBehaviour
         Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
 
         transform.forward = heading;
-        transform.position += upMovement;
-        transform.position += rightMovement;
+        playerRb.AddForce(heading * moveSpeed);
+        //transform.position += upMovement;
+        //transform.position += rightMovement;
 
     }
 }

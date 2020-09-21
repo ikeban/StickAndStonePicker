@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
+  - Enemy
+  - PowerUp
+  - Stick
+  - Stone
+  - Nail
   layers:
   - Default
   - TransparentFX
