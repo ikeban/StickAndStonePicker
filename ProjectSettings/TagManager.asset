@@ -3,14 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Wall
-  - Enemy
-  - PowerUp
-  - Stick
-  - Stone
-  - Nail
-  - Buyer
+  tags: []
   layers:
   - Default
   - TransparentFX
