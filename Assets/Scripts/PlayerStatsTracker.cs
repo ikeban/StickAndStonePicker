@@ -66,11 +66,19 @@ public class PlayerStatsTracker : MonoBehaviour
     private CurrentAndMaxNumber numberOfStones = new CurrentAndMaxNumber(0, 5);
     private CurrentAndMaxNumber numberOfSticks = new CurrentAndMaxNumber(0, 10);
 
+    private AudioSource playerAudio;
+
+    [SerializeField] private AudioClip sellingSound;
+    [SerializeField] private AudioClip nailHitSound;
+    [SerializeField] private AudioClip powerUpSound;
+    [SerializeField] private AudioClip pickingUpSound;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -84,11 +92,13 @@ public class PlayerStatsTracker : MonoBehaviour
         if (other.gameObject.CompareTag("PowerUp"))
         {
             numberOfLives.AddItem();
+            playerAudio.PlayOneShot(powerUpSound);
             // Always remove PowerUP
-            Destroy(other.gameObject);
+            Destroy(other.gameObject.transform.parent.gameObject);
         } else if (other.gameObject.CompareTag("Nail"))
         {
             numberOfLives.RemoveItem();
+            playerAudio.PlayOneShot(nailHitSound);
 
             //If we cannot remove more lives, then player is dead
             if (numberOfLives.CanRemoveItem() == false)
@@ -96,21 +106,23 @@ public class PlayerStatsTracker : MonoBehaviour
                 playerIsDead = true;
             } else // Remove nails which player hit
             {
-                Destroy(other.gameObject);
+                Destroy(other.gameObject.transform.parent.gameObject);
             }
         } else if (other.gameObject.CompareTag("Stick"))
         {
+            playerAudio.PlayOneShot(pickingUpSound);
             if (numberOfSticks.CanAddItem())
             {
                 numberOfSticks.AddItem();
-                Destroy(other.gameObject);
+                Destroy(other.gameObject.transform.parent.gameObject);
             } 
         } else if (other.gameObject.CompareTag("Stone"))
         {
+            playerAudio.PlayOneShot(pickingUpSound);
             if (numberOfStones.CanAddItem())
             {
                 numberOfStones.AddItem();
-                Destroy(other.gameObject);
+                Destroy(other.gameObject.transform.parent.gameObject);
             }
         }
     }
@@ -124,6 +136,7 @@ public class PlayerStatsTracker : MonoBehaviour
             numberOfStones.Reset();
             numberOfSticks.Reset();
             Debug.Log("Number of points " + points);
+            playerAudio.PlayOneShot(sellingSound);
         }
     }
 }
