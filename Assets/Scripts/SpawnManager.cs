@@ -14,8 +14,8 @@ public class SpawnManager : MonoBehaviour
 
     private float spawnDelay = 1.0f;
     private float powerUpSpawnTime = 8f;
-    private float nailSpawnTime = 5f;
-    private float collectableSpawnTime = 3f;
+    private float nailSpawnTime = 3f;
+    private float collectableSpawnTime = 1.5f;
 
     private PlayerStatsTracker playerStatsTrackerScript;
 
