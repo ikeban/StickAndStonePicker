@@ -17,9 +17,12 @@ public class SpawnManager : MonoBehaviour
     private float nailSpawnTime = 5f;
     private float collectableSpawnTime = 3f;
 
+    private PlayerStatsTracker playerStatsTrackerScript;
+
     // Start is called before the first frame update
     void Start()
     {
+        playerStatsTrackerScript = GameObject.Find("Player").GetComponent<PlayerStatsTracker>();
         InvokeRepeating("SpawnNail", spawnDelay, nailSpawnTime);
         InvokeRepeating("SpawnPowerUp", spawnDelay, powerUpSpawnTime);
         InvokeRepeating("SpawnCollectable", spawnDelay, collectableSpawnTime);
@@ -40,25 +43,35 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnNail()
     {
-        float nailYPosition = 0.25f;
-        Vector3 nailSpawnPosition = getRandomSpawnPosition(nailYPosition);
-        Instantiate(nail, nailSpawnPosition, nail.transform.rotation);
+        if (!playerStatsTrackerScript.playerIsDead)
+        {
+            float nailYPosition = 0.25f;
+            Vector3 nailSpawnPosition = getRandomSpawnPosition(nailYPosition);
+            Instantiate(nail, nailSpawnPosition, nail.transform.rotation);
+        }
+
     }
 
     void SpawnPowerUp()
     {
-        float powerUpYPosition = 0.67f;
-        Vector3 powerUpSpawnPosition = getRandomSpawnPosition(powerUpYPosition);
-        int randomIndex = Random.Range(0, powerUps.Length);
-        Instantiate(powerUps[randomIndex], powerUpSpawnPosition, powerUps[randomIndex].transform.rotation);
+        if (!playerStatsTrackerScript.playerIsDead)
+        {
+            float powerUpYPosition = 0.67f;
+            Vector3 powerUpSpawnPosition = getRandomSpawnPosition(powerUpYPosition);
+            int randomIndex = Random.Range(0, powerUps.Length);
+            Instantiate(powerUps[randomIndex], powerUpSpawnPosition, powerUps[randomIndex].transform.rotation);
+        }
     }
 
     void SpawnCollectable()
     {
-        float collectableYPosition = 0.5f;
-        Vector3 collectableSpawnPosition = getRandomSpawnPosition(collectableYPosition);
-        int randomIndex = Random.Range(0, collectableItems.Length);
-        Instantiate(collectableItems[randomIndex], collectableSpawnPosition, collectableItems[randomIndex].transform.rotation);
+        if (!playerStatsTrackerScript.playerIsDead)
+        {
+            float collectableYPosition = 0.5f;
+            Vector3 collectableSpawnPosition = getRandomSpawnPosition(collectableYPosition);
+            int randomIndex = Random.Range(0, collectableItems.Length);
+            Instantiate(collectableItems[randomIndex], collectableSpawnPosition, collectableItems[randomIndex].transform.rotation);
+        }
     }
 
 

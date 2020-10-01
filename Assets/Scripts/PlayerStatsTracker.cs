@@ -59,7 +59,7 @@ class CurrentAndMaxNumber
 
 public class PlayerStatsTracker : MonoBehaviour
 {
-    public bool playerIsDead = false;
+    public bool playerIsDead = true;
     public int points = 0;
 
     private CurrentAndMaxNumber numberOfLives = new CurrentAndMaxNumber(4, 4);
@@ -68,10 +68,10 @@ public class PlayerStatsTracker : MonoBehaviour
 
     private AudioSource playerAudio;
 
-    [SerializeField] private AudioClip sellingSound;
-    [SerializeField] private AudioClip nailHitSound;
-    [SerializeField] private AudioClip powerUpSound;
-    [SerializeField] private AudioClip pickingUpSound;
+    [SerializeField] private AudioClip sellingSound = null;
+    [SerializeField] private AudioClip nailHitSound = null;
+    [SerializeField] private AudioClip powerUpSound = null;
+    [SerializeField] private AudioClip pickingUpSound = null;
 
 
 
@@ -79,12 +79,18 @@ public class PlayerStatsTracker : MonoBehaviour
     void Start()
     {
         playerAudio = GetComponent<AudioSource>();
+        playerIsDead = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void StartGame()
+    {
+        playerIsDead = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -131,12 +137,18 @@ public class PlayerStatsTracker : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Buyer"))
         {
+            int oldPointsValue = points;
             points += numberOfStones.Number * 5;
             points += numberOfSticks.Number * 2;
             numberOfStones.Reset();
             numberOfSticks.Reset();
             Debug.Log("Number of points " + points);
-            playerAudio.PlayOneShot(sellingSound);
+            // Pley selling sound if really player sold something
+            if (points > oldPointsValue)
+            {
+                playerAudio.PlayOneShot(sellingSound);
+            }
+            
         }
     }
 }
