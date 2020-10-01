@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 class CurrentAndMaxNumber
 {
@@ -60,7 +60,8 @@ class CurrentAndMaxNumber
 
 public class PlayerStatsTracker : MonoBehaviour
 {
-    public bool playerIsDead = true;
+    public bool playerIsDead = false;
+    public bool gameIsActive = false;
     public int points = 0;
 
     private CurrentAndMaxNumber numberOfLives = new CurrentAndMaxNumber(4, 4);
@@ -68,6 +69,8 @@ public class PlayerStatsTracker : MonoBehaviour
     private CurrentAndMaxNumber numberOfSticks = new CurrentAndMaxNumber(0, 10);
 
     private AudioSource playerAudio;
+    private GameObject gameOverScreen;
+    private int timeLeft = 120;
 
     [SerializeField] private AudioClip sellingSound = null;
     [SerializeField] private AudioClip nailHitSound = null;
@@ -85,8 +88,10 @@ public class PlayerStatsTracker : MonoBehaviour
     void Start()
     {
         playerAudio = GetComponent<AudioSource>();
-        playerIsDead = true;
-        
+        gameOverScreen = GameObject.Find("GameOverScreen");
+        gameOverScreen.SetActive(false);
+        playerIsDead = false;
+        gameIsActive = false;
     }
 
     // Update is called once per frame
@@ -98,16 +103,48 @@ public class PlayerStatsTracker : MonoBehaviour
     public void StartGame()
     {
         playerIsDead = false;
+        gameIsActive = true;
+        gameOverScreen.SetActive(false);
+        timeLeft = 120;
         UpdateHudDisplay();
+        StartCoroutine(TimerDown());
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void GameOver()
+    {
+        playerIsDead = true;
+        gameIsActive = false;
+        gameOverScreen.SetActive(true);
     }
 
     private void UpdateHudDisplay()
     {
         scoreText.text = "Score: " + points;
         livesText.text = "Lives: " + numberOfLives.Number + "/" + numberOfLives.maxNumber;
-        timeText.text = "Time: " + 10;
         stickText.text = "Sticks: " + numberOfSticks.Number + "/" + numberOfSticks.maxNumber;
         stoneText.text = "Stones: " + numberOfStones.Number + "/" + numberOfStones.maxNumber;
+    }
+
+    IEnumerator TimerDown()
+    {
+        while (gameIsActive)
+        {
+            timeText.text = "Time: " + timeLeft;
+            yield return new WaitForSeconds(1);
+            timeLeft--;
+            timeText.text = "Time: " + timeLeft;
+
+            if (timeLeft == 0)
+            {
+                GameOver();
+            }
+
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -127,7 +164,7 @@ public class PlayerStatsTracker : MonoBehaviour
             //If we cannot remove more lives, then player is dead
             if (numberOfLives.CanRemoveItem() == false)
             {
-                playerIsDead = true;
+                GameOver();
             } else // Remove nails which player hit
             {
                 Destroy(other.gameObject.transform.parent.gameObject);

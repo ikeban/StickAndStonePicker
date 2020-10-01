@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!playerStatsTrackerScript.playerIsDead)
+        if (playerStatsTrackerScript.gameIsActive)
         {
             Move();
             

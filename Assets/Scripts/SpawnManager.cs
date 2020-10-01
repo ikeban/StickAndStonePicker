@@ -43,7 +43,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnNail()
     {
-        if (!playerStatsTrackerScript.playerIsDead)
+        if (playerStatsTrackerScript.gameIsActive)
         {
             float nailYPosition = 0.25f;
             Vector3 nailSpawnPosition = getRandomSpawnPosition(nailYPosition);
@@ -54,7 +54,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnPowerUp()
     {
-        if (!playerStatsTrackerScript.playerIsDead)
+        if (playerStatsTrackerScript.gameIsActive)
         {
             float powerUpYPosition = 0.67f;
             Vector3 powerUpSpawnPosition = getRandomSpawnPosition(powerUpYPosition);
@@ -65,7 +65,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnCollectable()
     {
-        if (!playerStatsTrackerScript.playerIsDead)
+        if (playerStatsTrackerScript.gameIsActive)
         {
             float collectableYPosition = 0.5f;
             Vector3 collectableSpawnPosition = getRandomSpawnPosition(collectableYPosition);
