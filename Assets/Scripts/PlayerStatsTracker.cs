@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
@@ -9,7 +10,7 @@ class CurrentAndMaxNumber
     {
         get; private set;
     }
-    private readonly int maxNumber;
+    public readonly int maxNumber;
 
     public CurrentAndMaxNumber(int startingQuantity, int maxNumber)
     {
@@ -73,6 +74,11 @@ public class PlayerStatsTracker : MonoBehaviour
     [SerializeField] private AudioClip powerUpSound = null;
     [SerializeField] private AudioClip pickingUpSound = null;
 
+    [SerializeField] private TextMeshProUGUI scoreText = null;
+    [SerializeField] private TextMeshProUGUI timeText = null;
+    [SerializeField] private TextMeshProUGUI livesText = null;
+    [SerializeField] private TextMeshProUGUI stickText = null;
+    [SerializeField] private TextMeshProUGUI stoneText = null;
 
 
     // Start is called before the first frame update
@@ -80,6 +86,7 @@ public class PlayerStatsTracker : MonoBehaviour
     {
         playerAudio = GetComponent<AudioSource>();
         playerIsDead = true;
+        
     }
 
     // Update is called once per frame
@@ -91,6 +98,16 @@ public class PlayerStatsTracker : MonoBehaviour
     public void StartGame()
     {
         playerIsDead = false;
+        UpdateHudDisplay();
+    }
+
+    private void UpdateHudDisplay()
+    {
+        scoreText.text = "Score: " + points;
+        livesText.text = "Lives: " + numberOfLives.Number + "/" + numberOfLives.maxNumber;
+        timeText.text = "Time: " + 10;
+        stickText.text = "Sticks: " + numberOfSticks.Number + "/" + numberOfSticks.maxNumber;
+        stoneText.text = "Stones: " + numberOfStones.Number + "/" + numberOfStones.maxNumber;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -99,6 +116,7 @@ public class PlayerStatsTracker : MonoBehaviour
         {
             numberOfLives.AddItem();
             playerAudio.PlayOneShot(powerUpSound);
+            UpdateHudDisplay();
             // Always remove PowerUP
             Destroy(other.gameObject.transform.parent.gameObject);
         } else if (other.gameObject.CompareTag("Nail"))
@@ -114,6 +132,7 @@ public class PlayerStatsTracker : MonoBehaviour
             {
                 Destroy(other.gameObject.transform.parent.gameObject);
             }
+            UpdateHudDisplay();
         } else if (other.gameObject.CompareTag("Stick"))
         {
             playerAudio.PlayOneShot(pickingUpSound);
@@ -121,7 +140,8 @@ public class PlayerStatsTracker : MonoBehaviour
             {
                 numberOfSticks.AddItem();
                 Destroy(other.gameObject.transform.parent.gameObject);
-            } 
+            }
+            UpdateHudDisplay();
         } else if (other.gameObject.CompareTag("Stone"))
         {
             playerAudio.PlayOneShot(pickingUpSound);
@@ -130,6 +150,7 @@ public class PlayerStatsTracker : MonoBehaviour
                 numberOfStones.AddItem();
                 Destroy(other.gameObject.transform.parent.gameObject);
             }
+            UpdateHudDisplay();
         }
     }
 
@@ -148,7 +169,7 @@ public class PlayerStatsTracker : MonoBehaviour
             {
                 playerAudio.PlayOneShot(sellingSound);
             }
-            
+            UpdateHudDisplay();
         }
     }
 }

@@ -27,7 +27,7 @@ public class StartButtonScript : MonoBehaviour
     {
         titleScreen.SetActive(false);
         gameHudScreen.SetActive(true);
-        playerStatsTrackerScript.playerIsDead = false;
+        playerStatsTrackerScript.StartGame();
     }
 
     // Update is called once per frame
