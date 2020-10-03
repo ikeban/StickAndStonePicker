@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 
     //[SerializeField]
-    private float moveSpeed = 14000.0f;
+    private float moveSpeed = 8000.0f;
     private Rigidbody playerRb;
     [SerializeField] private ParticleSystem dustParticle = null;
     private ParticleSystem.EmissionModule dustEmissionModule;
@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         if (playerStatsTrackerScript.gameIsActive)
         {
